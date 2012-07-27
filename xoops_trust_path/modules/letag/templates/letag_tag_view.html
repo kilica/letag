@@ -1,0 +1,17 @@
+<div id="letag">
+  <h1><{$smarty.const._MD_LETAG_LANG_TAG}><{$smarty.const._VIEW}> : <{$tag}></h1>
+  <!-- Tag Client Data -->
+  <div id="clientList">
+  <{foreach item=client from=$clients.data key=k}>
+  <div class="client">
+    <h2><{$clients.title[$k]}>
+      <{*<a href="<{xoops_cooluri dirname=$clients.dirname[$k] dataname=$clients.dataname[$k] action=list query="category_id=`$groupId`"}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/images/list.gif" alt="<{$smarty.const._LIST}>" /></a>
+      <{if $clients.isEditor[$k]==true}><a href="<{xoops_cooluri dirname=$clients.dirname[$k] dataname=$clients.dataname[$k] action=edit query="category_id=`$groupId`"}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/images/add.gif" alt="<{$smarty.const._EDIT}>" /></a><{/if}>*}>
+    </h2>
+    <{foreach item=item from=$clients.data[$k]}>
+    <{include file="`$clients.template_name[$k]`" data=$item}>
+    <{/foreach}>
+  </div>
+  <{/foreach}>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+#letag{
+    font-size: 15px;
+    line-height:    2em;
+}
+
+#letag h1{
+    border: none;
+    margin-bottom:  15px;
+    font-size:  1.5em
+}
+
+#letag h2{
+    border: none;
+    margin-bottom:  15px;
+    font-size:  1.3em
+}
+
+#letag h3{
+    border: none;
+    margin: 0px 0px 0px 0px;
+    font-size:  1.1em
+}
+
+#letag .desc{
+    border: 1px solid #DDDDDD;
+    margin: 10px 20px 10px 20px;
+    padding:    10px;
+}
+
+#letag .clear{
+    clear:  both;
+}
+
+#letagMenu ul li{
+    width:  50px;
+    float:  left;
+    margin-left:    25px;
+    margin-bottom:  25px;
+    list-style-type: none;
+}
+
+
+/* 2 column table */
+
+#letag .viewDetail dt{
+clear:both;
+width:140px;
+float:left;
+margin-top:10px;
+}
+
+#letag .viewDetail dd{
+float:left;
+margin-top:10px;
+}
+
+/* Form */
+
+#letag form{
+    
+}
+
+#letag form dt{
+clear:both;
+width:140px;
+float:left;
+margin-top:10px;
+}
+
+#letag form dd{
+float:left;
+margin-top:10px;
+}
+
+#letag form dd.description{
+
+}
+
