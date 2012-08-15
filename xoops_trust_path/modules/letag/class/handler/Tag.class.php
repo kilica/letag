@@ -173,7 +173,7 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 		$delCri->add(new Criteria('dataname', $dataname));
 		$delCri->add(new Criteria('data_id', $dataId));
 		$delCri->add(new Criteria('tag', $deleteTags, 'IN'));
-		if(! $this->deleteAll($delCri)){
+		if(! $this->deleteAll($delCri, true)){
 			$flag = false;
 		}
 	
@@ -187,7 +187,7 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 			$newTagObj->set('data_id', $dataId);
 			$newTagObj->set('uid', $uid);
 			$newTagObj->set('posttime', $posttime);
-			if(trim($newTag) && !$this->insert($newTagObj)){
+			if(trim($newTag) && !$this->insert($newTagObj, true)){
 				$flag = false;
 			}
 		}
