@@ -33,10 +33,10 @@ class Letag_AssetPreloadBase extends XCube_ActionFilter
 	**/
 	public static function prepare(/*** string ***/ $dirname)
 	{
-		static $setupCompleted = false;
-		if(!$setupCompleted)
+		static $setupCompleted = array();
+		if(! isset($setupCompleted[$dirname]))
 		{
-			$setupCompleted = self::_setup($dirname);
+			$setupCompleted[$dirname] = self::_setup($dirname);
 		}
 	}
 
