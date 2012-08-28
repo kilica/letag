@@ -21,7 +21,7 @@ require_once LETAG_TRUST_PATH . '/class/LetagUtils.class.php';
 // Define a basic manifesto.
 //
 $modversion['name'] = $myDirName;
-$modversion['version'] = 0.10;
+$modversion['version'] = 0.11;
 $modversion['description'] = _MI_LETAG_DESC_LETAG;
 $modversion['author'] = _MI_LETAG_LANG_AUTHOR;
 $modversion['credits'] = _MI_LETAG_LANG_CREDITS;
