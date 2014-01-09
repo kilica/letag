@@ -85,7 +85,7 @@ class Letag_TagDelegate implements Legacy_iTagDelegate
 	 * @param int		$posttime
 	 * @param string[]	$tagArr
 	 */	
-	public static function setTags($result, $tDirname, $dirname, $dataname, $dataId, $posttime, $tagArr)
+	public static function setTags(&$result, $tDirname, $dirname, $dataname, $dataId, $posttime, $tagArr)
 	{
 		$handler = Legacy_Utils::getModuleHandler('tag', $tDirname);
 		$result = $handler->updateTags($dirname, $dataname, $dataId, $tagArr, $posttime);
