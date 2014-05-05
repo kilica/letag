@@ -5,7 +5,7 @@
  * Date: 14/04/10
  * Time: 16:58
  */
-d
+
 class Letag_TagDelegate implements Legacy_iTagDelegate
 {
     /**
