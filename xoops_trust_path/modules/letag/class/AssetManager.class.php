@@ -42,7 +42,7 @@ class Letag_AssetManager
      * 
      * @return  Letag_AssetManager
     **/
-    public function &getInstance(/*** string ***/ $dirname)
+    public static function &getInstance(/*** string ***/ $dirname)
     {
         /**
          *  @var    Letag_AssetManager[]
