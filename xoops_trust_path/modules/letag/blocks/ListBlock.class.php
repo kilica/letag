@@ -114,12 +114,13 @@ class Letag_ListBlock extends Legacy_BlockProcedure
     {
         $root =& XCube_Root::getSingleton();
     
-        $render =& $this->getRenderTarget();
+        $uidList = $this->getBlockOption('uidList');
+	$render =& $this->getRenderTarget();
         $render->setTemplateName($this->_mBlock->get('template'));
         $render->setAttribute('tDirname', $this->_mBlock->get('dirname'));
         $render->setAttribute('dirname', $this->getBlockOption('dirname'));
         $render->setAttribute('dataname', $this->getBlockOption('dataname'));
-        $render->setAttribute('uidList', $this->getBlockOption('uidList'));
+        $render->setAttribute('uidList', $uidList? $uidList : array());
         $render->setAttribute('min', $this->getBlockOption('min'));
         $render->setAttribute('max', $this->getBlockOption('max'));
         $render->setAttribute('template', $this->_mBlock->get('dirname').'_inc_tag_cloud.html');
