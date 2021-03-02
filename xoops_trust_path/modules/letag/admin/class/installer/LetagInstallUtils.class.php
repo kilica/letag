@@ -22,10 +22,10 @@ class Letag_InstallUtils
 {
     /**
      * installSQLAutomatically
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function installSQLAutomatically(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -36,7 +36,7 @@ class Letag_InstallUtils
             return true;
         }
         $sqlFile = $sqlFileInfo[XOOPS_DB_TYPE];
-    
+
         $dirname = $module->getVar('dirname');
         $sqlFilePath = sprintf('%s/%s/%s',XOOPS_MODULE_PATH,$dirname,$sqlFile);
         if(!file_exists($sqlFilePath))
@@ -48,7 +48,7 @@ class Letag_InstallUtils
                 $sqlFile
             );
         }
-    
+
         require_once XOOPS_MODULE_PATH . '/legacy/admin/class/Legacy_SQLScanner.class.php';    // TODO will be use other class?
         $scanner = new Legacy_SQLScanner();
         $scanner->setDB_PREFIX(XOOPS_DB_PREFIX);
@@ -63,11 +63,11 @@ class Letag_InstallUtils
             );
             return false;
         }
-    
+
         $scanner->parse();
         $root =& XCube_Root::getSingleton();
         $db =& $root->mController->getDB();
-    
+
         foreach($scanner->getSQL() as $sql)
         {
             if(!$db->query($sql))
@@ -82,11 +82,11 @@ class Letag_InstallUtils
 
     /**
      * DBquery
-     * 
+     *
      * @param   string  $query
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function DBquery(/*** string ***/ $query,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -98,9 +98,9 @@ class Letag_InstallUtils
         $scanner->setBuffer($query);
         $scanner->parse();
         $sqls = $scanner->getSQL();
-    
+
         $root =& XCube_Root::getSingleton();
-    
+
         $successFlag = true;
         foreach($sqls as $sql)
         {
@@ -129,11 +129,11 @@ class Letag_InstallUtils
 
     /**
      * replaceDirname
-     * 
+     *
      * @param   string  $from
      * @param   string  $dirname
      * @param   string  $trustDirname
-     * 
+     *
      * @return  {string 'public',string 'trust'}
     **/
     public static function replaceDirname(/*** string ***/ $from,/*** string ***/ $dirname,/*** string ***/ $trustDirname = null)
@@ -146,12 +146,12 @@ class Letag_InstallUtils
 
     /**
      * readTemplateFile
-     * 
+     *
      * @param   string  $dirname
      * @param   string  $trustDirname
      * @param   string  $filename
      * @param   bool  $isBlock
-     * 
+     *
      * @return  string
     **/
     public static function readTemplateFile(/*** string ***/ $dirname,/*** string ***/ $trustDirname,/*** string ***/ $filename,/*** bool ***/ $isBlock = false)
@@ -163,7 +163,7 @@ class Letag_InstallUtils
             ($isBlock ? 'blocks/' : ''),
             $filename
         );
-    
+
         if(!file_exists($filePath))
         {
             $filePath = sprintf(
@@ -178,27 +178,27 @@ class Letag_InstallUtils
                 return false;
             }
         }
-    
+
         if(!($lines = file($filePath)))
         {
             return false;
         }
-    
+
         $tplData = '';
         foreach($lines as $line)
         {
             $tplData .= str_replace("\n","\r\n",str_replace("\r\n","\n",$line));
         }
-    
+
         return $tplData;
     }
 
     /**
      * installAllOfModuleTemplates
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  void
     **/
     public static function installAllOfModuleTemplates(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -215,11 +215,11 @@ class Letag_InstallUtils
 
     /**
      * installModuleTemplate
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   string[]  $template
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function installModuleTemplate(/*** XoopsModule ***/ &$module,/*** string[] ***/ $template,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -229,12 +229,12 @@ class Letag_InstallUtils
         $tplHandler =& Letag_Utils::getXoopsHandler('tplfile');
         $filename   =  Letag_InstallUtils::replaceDirname(trim($template['file']),$dirname,$trustDirname);
         $tplData    =  Letag_InstallUtils::readTemplateFile($dirname,$trustDirname,$filename['trust']);
-    
+
         if($tplData == false)
         {
             return false;
         }
-    
+
         $tplFile =& $tplHandler->create();
         $tplFile->setVar('tpl_refid'       ,$module->getVar('mid'));
         $tplFile->setVar('tpl_lastimported',0);
@@ -245,7 +245,7 @@ class Letag_InstallUtils
         $tplFile->setVar('tpl_tplset'      ,'default');
         $tplFile->setVar('tpl_file'        ,$filename['public'],true);
         $tplFile->setVar('tpl_desc'        ,isset($template['desctiption']) ? $template['description'] : '',true);
-    
+
         if($tplHandler->insert($tplFile))
         {
             $log->addReport(
@@ -265,25 +265,25 @@ class Letag_InstallUtils
             );
             return false;
         }
-    
+
         return true;
     }
 
     /**
      * uninstallAllOfModuleTemplates
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
      * @param   bool  $defaultOnly
-     * 
+     *
      * @return  void
     **/
     public static function uninstallAllOfModuleTemplates(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log,/*** bool ***/ $defaultOnly = true)
     {
         $tplHandler   =& Letag_Utils::getXoopsHandler('tplfile');
-    
+
         $delTemplates =& $tplHandler->find($defaultOnly ? 'default' : null,'module',$module->get('mid'));
-    
+
         if(is_array($delTemplates) && count($delTemplates) > 0)
         {
             $xoopsTpl = new XoopsTpl();
@@ -305,10 +305,10 @@ class Letag_InstallUtils
 
     /**
      * installAllOfBlocks
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function installAllOfBlocks(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -327,10 +327,10 @@ class Letag_InstallUtils
 
     /**
      * &createBlockByInfo
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   string[]  $block
-     * 
+     *
      * @return  XoopsBlock
     **/
     public static function &createBlockByInfo(/*** XoopsModule ***/ &$module,/*** string[] ***/ $block)
@@ -341,10 +341,10 @@ class Letag_InstallUtils
         $filename = isset($block['template']) ?
             Letag_InstallUtils::replaceDirname($block['template'],$module->get('dirname')) :
             null;
-    
+
         $blockHandler =& Letag_Utils::getXoopsHandler('block');
         $blockObj =& $blockHandler->create();
-    
+
         $blockObj->set('mid',$module->getVar('mid'));
         $blockObj->set('options',isset($block['options']) ? $block['options'] : null);
         $blockObj->set('name',$block['name']);
@@ -364,12 +364,12 @@ class Letag_InstallUtils
 
     /**
      * installBlock
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   XoopsBlock  &$blockObj
      * @param   string[]  &$block
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function installBlock(/*** XoopsModule ***/ &$module,/*** XoopsBlock ***/ &$blockObj,/*** string[] ***/ &$block,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -377,7 +377,7 @@ class Letag_InstallUtils
         $isNew = $blockObj->isNew();
         $blockHandler =& Letag_Utils::getXoopsHandler('block');
         $autoLink = isset($block['show_all_module']) ? $block['show_all_module'] : false;
-    
+
         if(!$blockHandler->insert($blockObj,$autoLink))
         {
             $log->addError(
@@ -388,21 +388,21 @@ class Letag_InstallUtils
             );
             return false;
         }
-    
+
         $log->addReport(
             XCube_Utils::formatString(
                 _MI_LETAG_INSTALL_MSG_BLOCK_INSTALLED,
                 $blockObj->getVar('name')
             )
         );
-    
+
         Letag_InstallUtils::installBlockTemplate($blockObj,$module,$log);
-    
+
         if(!$isNew)
         {
             return true;
         }
-    
+
         if($autoLink)
         {
             $sql = sprintf(
@@ -420,7 +420,7 @@ class Letag_InstallUtils
                 );
             }
         }
-    
+
         $gpermHandler =& Letag_Utils::getXoopsHandler('groupperm');
         $perm =& $gpermHandler->create();
         $perm->setVar('gperm_itemid',$blockObj->getVar('bid'));
@@ -462,17 +462,17 @@ class Letag_InstallUtils
                 }
             }
         }
-    
+
         return true;
     }
 
     /**
      * installBlockTemplate
-     * 
+     *
      * @param   XoopsBlock  &$block
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function installBlockTemplate(/*** XoopsBlock ***/ &$block,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -481,7 +481,7 @@ class Letag_InstallUtils
         {
             return true;
         }
-    
+
         $info =& $module->getInfo('blocks');
         $filename = Letag_InstallUtils::replaceDirname(
             $info[$block->get('func_num')]['template'],
@@ -489,15 +489,15 @@ class Letag_InstallUtils
             $module->getInfo('trust_dirname')
         );
         $tplHandler =& Letag_Utils::getXoopsHandler('tplfile');
-    
+
         $cri = new CriteriaCompo();
         $cri->add(new Criteria('tpl_type','block'));
         $cri->add(new Criteria('tpl_tplset','default'));
         $cri->add(new Criteria('tpl_module',$module->get('dirname')));
         $cri->add(new Criteria('tpl_file',$filename['public']));
-    
+
         $tpls =& $tplHandler->getObjects($cri);
-    
+
         if(count($tpls) > 0)
         {
             $tplFile =& $tpls[0];
@@ -513,14 +513,14 @@ class Letag_InstallUtils
             //$tplFile->set('tpl_desc',$block->get('description'));
             $tplFile->set('tpl_lastimported',0);
         }
-    
+
         $tplSource = Letag_InstallUtils::readTemplateFile(
             $module->get('dirname'),
             $module->getInfo('trust_dirname'),
             $filename['trust'],
             true
         );
-    
+
         $tplFile->set('tpl_source',$tplSource);
         $tplFile->set('tpl_lastmodified',time());
         if($tplHandler->insert($tplFile))
@@ -533,7 +533,7 @@ class Letag_InstallUtils
             );
             return true;
         }
-    
+
         $log->addError(
             XCube_Utils::formatString(
                 _MI_LETAG_INSTALL_ERROR_BLOCK_TPL_INSTALLED,
@@ -545,21 +545,21 @@ class Letag_InstallUtils
 
     /**
      * uninstallAllOfBlocks
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function uninstallAllOfBlocks(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
     {
         $successFlag = true;
-    
+
         $blockHandler =& Letag_Utils::getXoopsHandler('block');
         $gpermHandler =& Letag_Utils::getXoopsHandler('groupperm');
         $cri = new Criteria('mid',$module->get('mid'));
         $blocks =& $blockHandler->getObjectsDirectly($cri);
-    
+
         foreach($blocks as $block)
         {
             if($blockHandler->delete($block))
@@ -581,7 +581,7 @@ class Letag_InstallUtils
                 );
                 $successFlag = false;
             }
-            
+
             $cri = new CriteriaCompo();
             $cri->add(new Criteria('gperm_name','block_read'));
             $cri->add(new Criteria('gperm_itemid',$block->get('bid')));
@@ -597,28 +597,28 @@ class Letag_InstallUtils
                 $successFlag = false;
             }
         }
-    
+
         return $successFlag;
     }
 
     /**
      * smartUpdateAllOfBlocks
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  void
     **/
     public static function smartUpdateAllOfBlocks(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
     {
         $dirname = $module->get('dirname');
-    
+
         $fileReader = new Legacy_ModinfoX2FileReader($dirname);
         $dbReader = new Legacy_ModinfoX2DBReader($dirname);
-    
+
         $blocks =& $dbReader->loadBlockInformations();
         $blocks->update($fileReader->loadBlockInformations());
-    
+
         foreach($blocks->mBlocks as $block)
         {
             switch($block->mStatus)
@@ -643,11 +643,11 @@ class Letag_InstallUtils
 
     /**
      * updateBlockTemplateByInfo
-     * 
+     *
      * @param   Legacy_BlockInformation  &$info
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  void
     **/
     public static function updateBlockTemplateByInfo(/*** Legacy_BlockInformation ***/ &$info,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -657,7 +657,7 @@ class Letag_InstallUtils
         $cri->add(new Criteria('dirname',$module->get('dirname')));
         $cri->add(new Criteria('func_num',$info->mFuncNum));
         $blocks =& $blockHandler->getObjects($cri);
-    
+
         foreach($blocks as $block)
         {
             Letag_InstallUtils::uninstallBlockTemplate($block,$module,$log,true);
@@ -667,21 +667,21 @@ class Letag_InstallUtils
 
     /**
      * updateBlockByInfo
-     * 
+     *
      * @param   Legacy_BlockInformation  &$info
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  void
     **/
     public static function updateBlockByInfo(/*** Legacy_BlockInformation ***/ &$info,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
     {
-        $blockHandler =& Legacy_Utils::getModuleHandler('newblocks','legacy');
+        $blockHandler = Legacy_Utils::getModuleHandler('newblocks','legacy');
         $cri = new CriteriaCompo();
         $cri->add(new Criteria('dirname',$module->get('dirname')));
         $cri->add(new Criteria('func_num',$info->mFuncNum));
         $blocks =& $blockHandler->getObjects($cri);
-    
+
         foreach($blocks as $block)
         {
             $filename = Letag_InstallUtils::replaceDirname(
@@ -720,11 +720,11 @@ class Letag_InstallUtils
 
     /**
      * installBlockByInfo
-     * 
+     *
      * @param   Legacy_BlockInformation  &$info
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function installBlockByInfo(/*** Legacy_BlockInformation ***/ &$info,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -734,9 +734,9 @@ class Letag_InstallUtils
             $module->get('dirname'),
             $module->getInfo('trust_dirname')
         );
-    
+
         $blockHandler =& Letag_Utils::getXoopsHandler('block');
-    
+
         $block =& $blockHandler->create();
         $block->set('mid',$module->get('mid'));
         $block->set('func_num',$info->mFuncNum);
@@ -750,7 +750,7 @@ class Letag_InstallUtils
         $block->set('template',$filename['public']);
         $block->set('block_type','M');
         $block->set('c_type',1);
-    
+
         if(!$blockHandler->insert($block))
         {
             $log->addError(
@@ -761,25 +761,25 @@ class Letag_InstallUtils
             );
             return false;
         }
-    
+
         $log->addReport(
             XCube_Utils::formatString(
                 _MI_LETAG_INSTALL_MSG_BLOCK_INSTALLED,
                 $block->get('name')
             )
         );
-    
+
         Letag_InstallUtils::installBlockTemplate($block,$module,$log);
         return true;
     }
 
     /**
      * uninstallBlockByFuncNum
-     * 
+     *
      * @param   int  $func_num
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function uninstallBlockByFuncNum(/*** int ***/ $func_num,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -789,7 +789,7 @@ class Letag_InstallUtils
         $cri->add(new Criteria('dirname',$module->get('dirname')));
         $cri->add(new Criteria('func_num',$func_num));
         $blocks =& $blockHandler->getObjects($cri);
-    
+
         $successFlag = true;
         foreach($blocks as $block)
         {
@@ -818,19 +818,19 @@ class Letag_InstallUtils
 
     /**
      * uninstallBlockTemplate
-     * 
+     *
      * @param   XoopsBlock  &$block
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
      * @param   bool  $defaultOnly
-     * 
+     *
      * @return  bool
     **/
     public static function uninstallBlockTemplate(/*** XoopsBlock ***/ &$block,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log,/*** bool ***/ $defaultOnly = false)
     {
         $tplHandler =& Letag_Utils::getXoopsHandler('tplfile');
         $delTemplates =& $tplHandler->find($defaultOnly ? 'default' : null,'block',$module->get('mid'),$module->get('dirname'),$block->get('template'));
-    
+
         if(is_array($delTemplates) && count($delTemplates) > 0)
         {
             foreach($delTemplates as $tpl)
@@ -846,7 +846,7 @@ class Letag_InstallUtils
                 }
             }
         }
-    
+
         $log->addReport(
             XCube_Utils::formatString(
                 _MI_LETAG_INSTALL_MSG_BLOCK_TPL_UNINSTALLED,
@@ -858,10 +858,10 @@ class Letag_InstallUtils
 
     /**
      * installAllOfConfigs
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function installAllOfConfigs(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -870,7 +870,7 @@ class Letag_InstallUtils
         $configHandler =& Letag_Utils::getXoopsHandler('config');
         $fileReader = new Legacy_ModinfoX2FileReader($module->get('dirname'));    // TODO will be use other class?
         $preferences = $fileReader->loadPreferenceInformations();
-    
+
         foreach($preferences->mPreferences as $info)
         {
             $config =& $configHandler->createConfig();
@@ -883,7 +883,7 @@ class Letag_InstallUtils
             $config->set('conf_valuetype',$info->mValueType);
             $config->setConfValueForInput($info->mDefault);
             $config->set('conf_order',$info->mOrder);
-    
+
             if(count($info->mOption->mOptions) > 0)
             {
                 foreach($info->mOption->mOptions as $opt)
@@ -895,7 +895,7 @@ class Letag_InstallUtils
                     unset($option);
                 }
             }
-    
+
             if($configHandler->insertConfig($config))
             {
                 $log->addReport(
@@ -916,17 +916,17 @@ class Letag_InstallUtils
                 $successFlag = false;
             }
         }
-    
+
         return $successFlag;
     }
 
     /**
      * installConfigByInfo
-     * 
+     *
      * @param   Legacy_PreferenceInformation  &$info
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  void
     **/
     public static function installConfigByInfo(/*** Legacy_PreferenceInformation ***/ &$info,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -942,7 +942,7 @@ class Letag_InstallUtils
         $config->set('conf_valuetype',$info->mValueType);
         $config->setConfValueForInput($info->mDefault);
         $config->set('conf_order',$info->mOrder);
-    
+
         if(count($info->mOption->mOptions) > 0)
         {
             foreach($info->mOption->mOptions as $opt)
@@ -954,7 +954,7 @@ class Letag_InstallUtils
                 unset($option);
             }
         }
-    
+
         if($configHandler->insertConfig($config))
         {
             $log->addReport(
@@ -973,15 +973,15 @@ class Letag_InstallUtils
                 )
             );
         }
-        
+
     }
 
     /**
      * uninstallAllOfConfigs
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function uninstallAllOfConfigs(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -990,15 +990,15 @@ class Letag_InstallUtils
         {
             return true;
         }
-    
+
         $configHandler =& Letag_Utils::getXoopsHandler('config');
         $configs =& $configHandler->getConfigs(new Criteria('conf_modid',$module->get('mid')));
-    
+
         if(count($configs) == 0)
         {
             return true;
         }
-    
+
         $sucessFlag = true;
         foreach($configs as $config)
         {
@@ -1027,23 +1027,23 @@ class Letag_InstallUtils
 
     /**
      * uninstallConfigByOrder
-     * 
+     *
      * @param   int  $order
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  void
     **/
     public static function uninstallConfigByOrder(/*** int ***/ $order,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
     {
         $configHandler =& Letag_Utils::getXoopsHandler('config');
-    
+
         $cri = new CriteriaCompo();
         $cri->add(new Criteria('conf_modid',$module->get('mid')));
         $cri->add(new Criteria('conf_catid',0));
         $cri->add(new Criteria('conf_order',$order));
         $configs = $configHandler->getConfigs($cri);
-    
+
         foreach($configs as $config)
         {
             if($configHandler->deleteConfig($config))
@@ -1069,22 +1069,22 @@ class Letag_InstallUtils
 
     /**
      * smartUpdateAllOfConfigs
-     * 
+     *
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  void
     **/
     public static function smartUpdateAllOfConfigs(/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
     {
         $dirname = $module->get('dirname');
-    
+
         $fileReader = new Legacy_ModinfoX2FileReader($dirname);
         $dbReader = new Legacy_ModinfoX2DBReader($dirname);
-    
+
         $configs  =& $dbReader->loadPreferenceInformations();
         $configs->update($fileReader->loadPreferenceInformations());
-    
+
         foreach($configs->mPreferences as $config)
         {
             switch($config->mStatus)
@@ -1109,11 +1109,11 @@ class Letag_InstallUtils
 
     /**
      * updateConfigByInfo
-     * 
+     *
      * @param   Legacy_PreferenceInformation  &$info
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function updateConfigByInfo(/*** Legacy_PreferenceInformation ***/ &$info,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -1124,13 +1124,13 @@ class Letag_InstallUtils
         $cri->add(new Criteria('conf_catid',0));
         $cri->add(new Criteria('conf_name',$info->mName));
         $configs =& $configHandler->getConfigs($cri);
-    
+
         if(!(count($configs) > 0 && is_object($configs[0])))
         {
             $log->addError(_MILETAG_INSTALL_ERROR_CONFIG_NOT_FOUND);
             return false;
         }
-    
+
         $config =& $configs[0];
         $config->set('conf_title',$info->mTitle);
         $config->set('conf_desc',$info->mDescription);
@@ -1146,7 +1146,7 @@ class Letag_InstallUtils
             $config->set('conf_valuetype',$info->mValueType);
         }
         $config->set('conf_order',$info->mOrder);
-    
+
         $options =& $configHandler->getConfigOptions(new Criteria('conf_id',$config->get('conf_id')));
         if(is_array($options))
         {
@@ -1155,7 +1155,7 @@ class Letag_InstallUtils
                 $configHandler->_oHandler->delete($opt);  // TODO will be use other method
             }
         }
-    
+
         if(count($info->mOption->mOptions) > 0)
         {
             foreach($info->mOption->mOptions as $opt)
@@ -1168,7 +1168,7 @@ class Letag_InstallUtils
                 unset($option);
             }
         }
-    
+
         if($configHandler->insertConfig($config))
         {
             $log->addReport(
@@ -1179,7 +1179,7 @@ class Letag_InstallUtils
             );
             return true;
         }
-    
+
         $log->addError(
             XCube_Utils::formatString(
                 _MI_LETAG_INSTALL_ERROR_CONFIG_UPDATED,
@@ -1191,11 +1191,11 @@ class Letag_InstallUtils
 
     /**
      * updateConfigOrderByInfo
-     * 
+     *
      * @param   Legacy_PreferenceInformation  &$info
      * @param   XoopsModule  &$module
      * @param   Legacy_ModuleInstallLog  &$log
-     * 
+     *
      * @return  bool
     **/
     public static function updateConfigOrderByInfo(/*** Legacy_PreferenceInformation ***/ &$info,/*** XoopsModule ***/ &$module,/*** Legacy_ModuleInstallLog ***/ &$log)
@@ -1206,13 +1206,13 @@ class Letag_InstallUtils
         $cri->add(new Criteria('conf_catid',0));
         $cri->add(new Criteria('conf_name',$info->mName));
         $configs =& $configHandler->getConfigs($cri);
-    
+
         if(!(count($configs) > 0 && is_object($configs[0])))
         {
             $log->addError(_MI_LETAG_INSTALL_ERROR_CONFIG_NOT_FOUND);
             return false;
         }
-    
+
         $config =& $configs[0];
         $config->set('conf_order',$info->mOrder);
         if(!$configHandler->insertConfig($config))
@@ -1228,5 +1228,3 @@ class Letag_InstallUtils
         return true;
     }
 }
-
-?>

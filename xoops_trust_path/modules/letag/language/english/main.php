@@ -29,6 +29,3 @@ define('_MD_LETAG_LANG_POSTTIME', 'Posttime');
 define('_MD_LETAG_LANG_ADD_A_NEW_TAG', 'Add a new Tag');
 define('_MD_LETAG_LANG_TAG_EDIT', 'Tag Edit');
 define('_MD_LETAG_LANG_TAG_DELETE', 'Tag Delete');
-
-
-?>

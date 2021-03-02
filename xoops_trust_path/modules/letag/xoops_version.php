@@ -21,7 +21,7 @@ require_once LETAG_TRUST_PATH . '/class/LetagUtils.class.php';
 // Define a basic manifesto.
 //
 $modversion['name'] = $myDirName;
-$modversion['version'] = 0.20;
+$modversion['version'] = 0.21;
 $modversion['description'] = _MI_LETAG_DESC_LETAG;
 $modversion['author'] = _MI_LETAG_LANG_AUTHOR;
 $modversion['credits'] = _MI_LETAG_LANG_CREDITS;
@@ -176,5 +176,3 @@ $modversion['blocks'] = array(
 ##[cubson:block]
 ##[/cubson:block]
 );
-
-?>

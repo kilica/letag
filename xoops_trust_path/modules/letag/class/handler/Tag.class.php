@@ -20,9 +20,9 @@ class Letag_TagObject extends XoopsSimpleObject
 
 	/**
 	 * __construct
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function __construct()
@@ -38,7 +38,7 @@ class Letag_TagObject extends XoopsSimpleObject
 
 	/**
 	 * getClientData
-	 * 
+	 *
 	 * @param	array	$list
 	 *  $client['template_name']
 	 *  $client['data']
@@ -46,7 +46,7 @@ class Letag_TagObject extends XoopsSimpleObject
 	 * @param	array	$client
 	 *  $client['dirname']
 	 *  $client['dataname']
-	 * 
+	 *
 	 * @return	mixed[]
 	 *	string	$list['template_name'][]
 	 *	string	$list['data'][]
@@ -64,16 +64,16 @@ class Letag_TagObject extends XoopsSimpleObject
 		foreach($objs as $obj){
 			$idList[] = $obj->get('data_id');
 		}
-	
+
 		XCube_DelegateUtils::call('Legacy_TagClient.'.$client['dirname'].'.GetClientData', new XCube_Ref($list), $client['dirname'], $client['dataname'], $idList);
 		return $list;
 	}
 
 	/**
 	 * getPrimary
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	string
 	**/
 	public function getPrimary()
@@ -83,9 +83,9 @@ class Letag_TagObject extends XoopsSimpleObject
 
 	/**
 	 * getDataname
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	string
 	**/
 	public function getDataname()
@@ -107,26 +107,27 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 
 	/**
 	 * __construct
-	 * 
+	 *
 	 * @param	XoopsDatabase  &$db
 	 * @param	string	$dirname
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function __construct(/*** XoopsDatabase ***/ &$db,/*** string ***/ $dirname)
 	{
 		$this->mTable = strtr($this->mTable,array('{dirname}' => $dirname));
-		parent::XoopsObjectGenericHandler($db);
+		//parent::XoopsObjectGenericHandler($db);
+        parent::__construct($db);
 	}
 
 	/**
 	 * getTags
-	 * 
+	 *
 	 * @param	string	$dirname
 	 * @param	string  $dataname
 	 * @param	int		$dataId
 	 * @param	int[]	$uidList
-	 * 
+	 *
 	 * @return	Letag_TagObject[]
 	**/
 	public function getTags(/*** string ***/ $dirname=null, /*** string ***/ $dataname=null, /*** string ***/ $dataId=0, /*** int[] ***/ $uidList=array())
@@ -137,13 +138,13 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 
 	/**
 	 * updateTags
-	 * 
+	 *
 	 * @param	string	$dirname
 	 * @param	string  $dataname
 	 * @param	int		$dataId
 	 * @param	string[]	$tagArr
 	 * @param	int		$posttime
-	 * 
+	 *
 	 * @return	bool
 	**/
 	public function updateTags(/*** string ***/ $dirname, /*** string ***/ $dataname, /*** string ***/ $dataId, /*** string[] ***/ $tagArr, /*** int ***/ $posttime)
@@ -156,7 +157,7 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 			$flag = false;
 			return;
 		}
-	
+
 		$cri = new CriteriaCompo();
 		$cri->add(new Criteria('dirname', $dirname));
 		$cri->add(new Criteria('dataname', $dataname));
@@ -165,7 +166,7 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 		foreach(array_keys($objs) as $key){
 			$oldTagArr[] = $objs[$key]->get('tag');
 		}
-	
+
 		//remove deleted tags
 		$deleteTags = array_diff($oldTagArr, $tagArr);
 		$delCri = new CriteriaCompo();
@@ -176,7 +177,7 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 		if(! $this->deleteAll($delCri, true)){
 			$flag = false;
 		}
-	
+
 		//insert additional tags
 		$addTags = array_diff($tagArr, $oldTagArr);
 		foreach($addTags as $newTag){
@@ -202,7 +203,7 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 	 * @param string	$dataname
 	 *
 	 * @return $int[]
-	 */	
+	 */
 	public function getDataIdListByTags($tagArr, $dirname, $dataname)
 	{
 		$tagIds = array();
@@ -219,7 +220,7 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 			}
 			$tagIds[] = $ids;
 		}
-		//filter tag_id 
+		//filter tag_id
 		if(count($tagIds)>0){
 			$ids = array_shift($tagIds);
 			for($i=0;$i<count($tagIds);$i++){
@@ -231,35 +232,35 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 
 	/**
 	 * get uniqued tag list
-	 * 
+	 *
 	 * @access public
 	 * @param CriteriaElement $criteria
-	 * 
+	 *
 	 * @return array
 	 */
 	public function &getTagList($criteria = null)
 	{
 		$ret = array();
 		$where = "";
-	
+
 		if($criteria !== null && is_a($criteria, 'CriteriaElement')) {
 			$where = $this->_makeCriteria4sql($criteria);
 			if (trim($where)) {
 				$where = " WHERE " . $where;
 			}
 		}
-	
+
 		$sql = "SELECT tag, COUNT(tag_id) AS quantity
 		  FROM ". $this->mTable .$where. "
 		  GROUP BY tag
 		  ORDER BY tag ASC";
-	
+
 		$result = $this->db->query($sql);
-	
+
 		if (!$result) {
 			return $ret;
 		}
-	
+
 		// here we loop through the results and put them into a simple array:
 		// $tag['thing1'] = 12;
 		// $tag['thing2'] = 25;
@@ -272,4 +273,3 @@ class Letag_TagHandler extends XoopsObjectGenericHandler
 	}
 }
 
-?>

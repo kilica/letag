@@ -63,4 +63,3 @@ define('_MI_LETAG_TPL_TAG_VIEW', 'Tag View');
 /*** block ***/
 define('_MI_LETAG_BLOCK_NAME_TAG_CLOUD', 'タグクラウド');
 define('_MI_LETAG_BLOCK_DESC_TAG_CLOUD', 'タグクラウド');
-?>
