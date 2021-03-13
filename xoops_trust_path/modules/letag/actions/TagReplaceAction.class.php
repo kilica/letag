@@ -20,9 +20,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 {{_mImageNum}}
 	/**
 	 * &_getHandler
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	Letag_TagHandler
 	**/
 	protected function &_getHandler()
@@ -33,9 +33,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 
 	/**
 	 * _setupActionForm
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	void
 	**/
 	protected function _setupActionForm()
@@ -46,9 +46,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 
 	/**
 	 * hasPermission
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	bool
 	**/
 	public function hasPermission()
@@ -58,9 +58,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 
 	/**
 	 * prepare
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	bool
 	**/
 	public function prepare()
@@ -77,9 +77,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 
 	/**
 	 * executeViewInput
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewInput(/*** XCube_RenderTarget ***/ &$render)
@@ -92,9 +92,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 
 	/**
 	 * executeViewSuccess
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewSuccess(/*** XCube_RenderTarget ***/ &$render)
@@ -104,9 +104,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 
 	/**
 	 * executeViewError
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewError(/*** XCube_RenderTarget ***/ &$render)
@@ -116,9 +116,9 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 
 	/**
 	 * executeViewCancel
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewCancel(/*** XCube_RenderTarget ***/ &$render)
@@ -127,4 +127,3 @@ class Letag_TagEditAction extends Letag_AbstractEditAction
 	}
 
 }
-?>

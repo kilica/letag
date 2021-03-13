@@ -25,9 +25,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * __construct
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function __construct()
@@ -39,9 +39,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * getPageTitle
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	string
 	**/
 	public function getPagetitle()
@@ -52,14 +52,16 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * _getTitle
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	string
 	**/
 	protected function _getTitle()
 	{
-		if(! $this->mObject) return null;
+		//if(! $this->mObject) return null;
+        if (!isset($this->mObject)) return null;
+
 		if($this->mObject->getShow('title')){
 			return $this->mObject->getShow('title');
 		}
@@ -70,9 +72,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * _getActionName
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	string
 	**/
 	protected function _getActionName()
@@ -82,9 +84,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * _getDatePickerScript
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	String
 	**/
 	protected function _getDatePickerScript()
@@ -94,9 +96,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * _getStylesheet
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	String
 	**/
 	protected function _getStylesheet()
@@ -106,9 +108,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * setHeaderScript
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function setHeaderScript()
@@ -121,9 +123,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * prepare
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	bool
 	**/
 	public function prepare()
@@ -133,9 +135,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * hasPermission
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	bool
 	**/
 	public function hasPermission()
@@ -145,9 +147,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * getDefaultView
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	Enum
 	**/
 	public function getDefaultView()
@@ -157,9 +159,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * execute
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	Enum
 	**/
 	public function execute()
@@ -169,9 +171,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * executeViewSuccess
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewSuccess(/*** XCube_RenderTarget ***/ &$render)
@@ -180,9 +182,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * executeViewError
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewError(/*** XCube_RenderTarget ***/ &$render)
@@ -191,9 +193,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * executeViewIndex
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewIndex(/*** XCube_RenderTarget ***/ &$render)
@@ -202,9 +204,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * executeViewInput
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewInput(/*** XCube_RenderTarget ***/ &$render)
@@ -213,9 +215,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * executeViewPreview
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewPreview(/*** XCube_RenderTarget ***/ &$render)
@@ -224,9 +226,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * executeViewCancel
-	 * 
+	 *
 	 * @param	XCube_RenderTarget	&$render
-	 * 
+	 *
 	 * @return	void
 	**/
 	public function executeViewCancel(/*** XCube_RenderTarget ***/ &$render)
@@ -235,9 +237,9 @@ abstract class Letag_AbstractAction
 
 	/**
 	 * _getNextUri
-	 * 
+	 *
 	 * @param	void
-	 * 
+	 *
 	 * @return	string
 	**/
 	protected function _getNextUri($tableName, $actionName=null)
@@ -251,5 +253,3 @@ abstract class Letag_AbstractAction
 		}
 	}
 }
-
-?>
